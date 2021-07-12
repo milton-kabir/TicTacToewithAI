@@ -1,5 +1,6 @@
 package com.kabir.milton;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -14,40 +15,56 @@ public class Main {
         }
         return true;
     }
+    public static int getRandomNumberUsingInts(int min, int max) {
+        Random random = new Random();
+        return random.ints(min, max)
+                .findFirst()
+                .getAsInt();
+    }
 
     public static void main(String[] args) {
         // write your code here
-        System.out.println("Enter cells:");
+        //System.out.println("Enter cells:");
         Scanner sc = new Scanner(System.in);
-        String st = sc.nextLine();
+        String st = "_________";
         System.out.println("---------");
         System.out.println("| " + st.charAt(0) + " " + st.charAt(1) + " " + st.charAt(2) + " |");
         System.out.println("| " + st.charAt(3) + " " + st.charAt(4) + " " + st.charAt(5) + " |");
         System.out.println("| " + st.charAt(6) + " " + st.charAt(7) + " " + st.charAt(8) + " |");
         System.out.println("---------");
-        int ck = 1, cnt = 0,cntx=0,cnt0=0;
-        for(int i=0;i<st.length();i++){
-            if(st.charAt(i)=='X'){
-                cntx++;
-            }
-            else if(st.charAt(i)=='O'){
-                cnt0++;
-            }
-        }
-        if(cntx<=cnt0){
-            ck=1;
-        }
-        else{
-            ck=0;
-        }
+        int ck = 1, cnt = 0,tt=0;
         while (true) {
-            System.out.println("Enter the coordinates:");
-            String[] strArr = sc.nextLine().split(" ");
-            if (!isNumeric(strArr[0]) || !isNumeric(strArr[1])) {
-                System.out.println("You should enter numbers!");
+            if(tt==1){
+                Random random = new Random();
+                int xx=random.nextInt(9);
+                int yy=random.nextInt(9);
+                if (xx > 3 || xx < 1 || yy > 3 || yy < 1) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                    continue;
+                }
+                System.out.println(xx+" "+yy);
+                int id = (xx - 1) * 3 + (yy - 1);
+                if (st.charAt(id) != '_') {
+//                    System.out.println("This cell is occupied! Choose another one!");
+                    continue;
+                }
+                st = st.substring(0, id) + 'O' + st.substring(id + 1);
+                System.out.println("Making move level \"easy\"");
+                System.out.println("---------");
+                System.out.println("| " + st.charAt(0) + " " + st.charAt(1) + " " + st.charAt(2) + " |");
+                System.out.println("| " + st.charAt(3) + " " + st.charAt(4) + " " + st.charAt(5) + " |");
+                System.out.println("| " + st.charAt(6) + " " + st.charAt(7) + " " + st.charAt(8) + " |");
+                System.out.println("---------");
+                tt=0;
 
             }
-            else {
+            else{
+                System.out.println("Enter the coordinates:");
+                String[] strArr = sc.nextLine().split(" ");
+                if (!isNumeric(strArr[0]) || !isNumeric(strArr[1])) {
+                    System.out.println("You should enter numbers!");
+                    continue;
+                }
                 int c1 = Integer.parseInt(strArr[0]);
                 int c2 = Integer.parseInt(strArr[1]);
                 if (c1 > 3 || c1 < 1 || c2 > 3 || c2 < 1) {
@@ -59,20 +76,12 @@ public class Main {
                     System.out.println("This cell is occupied! Choose another one!");
                     continue;
                 }
-                if (ck == 1) {
-                    st = st.substring(0, id) + 'X' + st.substring(id + 1);
-                    ck = 0;
-                } else {
-                    st = st.substring(0, id) + 'O' + st.substring(id + 1);
-                    ck = 1;
-                }
-                cnt++;
+                st = st.substring(0, id) + 'X' + st.substring(id + 1);
                 System.out.println("---------");
                 System.out.println("| " + st.charAt(0) + " " + st.charAt(1) + " " + st.charAt(2) + " |");
                 System.out.println("| " + st.charAt(3) + " " + st.charAt(4) + " " + st.charAt(5) + " |");
                 System.out.println("| " + st.charAt(6) + " " + st.charAt(7) + " " + st.charAt(8) + " |");
                 System.out.println("---------");
-
 
                 int x = 0, O = 0;
                 if (st.charAt(0) == 'X' && st.charAt(1) == 'X' && st.charAt(2) == 'X') {
@@ -111,23 +120,21 @@ public class Main {
                     O = 1;
                 }
 
+
                 if (x == 0 && O == 0 && cnt == 9) {
                     System.out.println("Draw");
                     break;
-                } else if (x == 1) {
+                }
+                else if (x == 1) {
                     System.out.println("X wins");
                     break;
-                } else if (O == 1) {
+                }
+                else if (O == 1) {
                     System.out.println("O wins");
                     break;
                 }
-                if(cnt!=9){
-                    System.out.println("Game not finished.");
-                    break;
-                }
+                tt=1;
             }
         }
-
-
     }
 }
